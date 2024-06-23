@@ -1,0 +1,67 @@
+#Data exploration of a data set about passengers on the Titanic
+
+titanic <- read.csv("titanic.csv")
+
+#Finding information about the types of variables in the dataset
+ls(titanic)
+class(titanic$Age)
+class(titanic$Cabin)
+class(titanic$Embarked)
+class(titanic$Fare)
+class(titanic$Name)
+class(titanic$Parch)
+class(titanic$PassengerId)
+class(titanic$Pclass)
+class(titanic$Sex)
+class(titanic$SibSp)
+class(titanic$Survived)
+class(titanic$Ticket)
+
+##Variable      Type         Continuous/Discrete
+##Age           numeric      discrete
+##Cabin         character    discrete
+##Embarked      character    discrete
+##Fare          numeric      discrete
+##Name          character    discrete
+##Parch         integer      discrete
+##PassengerId   integer      discrete
+##Pclass        integer      discrete
+##Sex           character    discrete
+##SibSp         integer      discrete
+##Survived      integer      discrete
+##Ticket        integer      discrete
+
+
+class(titanic$Survived)
+class(titanic$Pclass)
+titanic$Survived<-factor(titanic$Survived)
+titanic$Pclass<-factor(titanic$Pclass)
+class(titanic$Survived)
+class(titanic$Pclass)
+
+
+
+#subsetting data to compare demographical info on basis of surviror or not
+age.dea<-titanic$Age[which(titanic$Survived==0)]
+age.sur<-titanic$Age[which(titanic$Survived==1)]
+fare.dea<-titanic$Fare[which(titanic$Survived==0)]
+fare.sur<-titanic$Fare[which(titanic$Survived==1)]
+
+boxplot(age.sur,age.dea,fare.sur,fare.dea,names=c("Age Survived", "Age Died", "Fare Survived", "Fare Died"))
+
+#Using the age.sur subset created before, we can continue with the requested summary statistics.
+hist(age.sur)
+#Shape is relatively normal with a right skew. There seem to be older people as outliers. 
+
+summary(age.sur)
+#The quartiles confirm this skew as we see the difference between the min and the median is 27.58,
+#while the difference between the max and the median is 44.
+  
+#To find the mean and SD, NA values can  be subsetted out. This is not the best practice but it is the simplest
+subset.age.sur<-na.omit(age.sur)
+mean(subset.age.sur)
+sd(subset.age.sur)
+#We see that the average age of survived passengers is 28.3469
+
+#From the table of values, it is clear that 24 is the mode of the data.
+table(subset.age.sur)
